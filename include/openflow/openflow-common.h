@@ -356,8 +356,161 @@ enum ofp_match_type {
     OFPMT_STANDARD = 0,         /* The match fields defined in the ofp11_match
                                    structure apply */
     OFPMT_OXM = 1,              /* OpenFlow Extensible Match */
+    
+    OFPMT_MTS = 2,
+};
+/* Fields to match against flows */
+struct ofp_match {
+
+
+
+
+uint16_t type; /* One of OFPMT_* */
+uint16_t length; /* Length of ofp_match (excluding padding) */
+uint16_t size;
+uint8_t mts_ofb_match_field[0]; /* 0 or more match fields */
+uint8_t pad2[2]; /* Align to 64-bits */
+
+};
+OFP_ASSERT(sizeof(struct ofp_match) == 40);
+
+
+
+
+
+#define OFPMT_MTS__(fields,length,size)\((fields)<<10|(length)<<3)|size) /* size means the bits   of the lentgh*/
+
+#define OFPMT_MTS_A(fielda,lengtha,sizea)\((fielda)<<10|(lengtha)<<3)|sizea) 
+#define OFPMT_MTS_B(fieldb,lengthb,sizeb)\((fieldb)<<10|(lengthb)<<3)|sizeb) 
+#define OFPMT_MTS_C(fieldc,lengthc,sizec)\((fieldc)<<10|(lengthc)<<3)|sizec) 
+#define OFPMT_MTS_D(fieldd,lengthd,sized)\((fieldd)<<10|(lengthd)<<3)|sized) 
+#define OFPMT_MTS_E(fielde,lengthe,sizee)\((fielde)<<10|(lengthe)<<3)|sizee) 
+#define OFPMT_MTS_F(fieldf,lengthf,sizef)\((fieldf)<<10|(lengthf)<<3)|sizef) 
+#define OFPMT_MTS_G(fieldg,lengthg,sizeg)\((fieldg)<<10|(lengthg)<<3)|sizeg) 
+#define OFPMT_MTS_H(fieldh,lengthh,sizeh)\((fieldh)<<10|(lengthh)<<3)|sizeh) 
+
+
+
+#define OFPMT_MTS_Field(MTS) ((MTS)>>10)& 0x3f)
+#define OFPMT_MTS_LENGTH(MTS) ((MTS)>>3 & 0x7f)
+#define OFPMT_MTS_SIZE(MTS) ((MTS)& 0x7)
+
+#define OFPMT_MTS_Fielda(MTSa) ((MTSa)>>10)& 0x3f)
+#define OFPMT_MTS_LENGTHa(MTSa) ((MTSa)>>3 & 0x7f)
+#define OFPMT_MTS_SIZEa(MTSa) ((MTSa) & 0x7)
+
+#define OFPMT_MTS_Fieldb(MTSb) ((MTSb)>>10)& 0x3f)
+#define OFPMT_MTS_LENGTHb(MTSb) ((MTSb)>>3 & 0x7f)
+#define OFPMT_MTS_SIZEb(MTSb) ((MTSb) & 0x7)
+
+#define OFPMT_MTS_Fieldc(MTSc) ((MTSc)>>10)& 0x3f)
+#define OFPMT_MTS_LENGTHc(MTSc) ((MTSc)>>3 & 0x7f)
+#define OFPMT_MTS_SIZEc(MTSc) ((MTSc) & 0x7)
+
+#define OFPMT_MTS_Fieldd(MTSd) ((MTSd)>>10)& 0x3f)
+#define OFPMT_MTS_LENGTHd(MTSd) ((MTSd)>>3 & 0x7f)
+#define OFPMT_MTS_SIZEd(MTSd) ((MTSd) & 0x7)
+
+#define OFPMT_MTS_Fielde(MTSe) ((MTSe)>>10)& 0x3f)
+#define OFPMT_MTS_LENGTHe(MTSe) ((MTSe)>>3 & 0x7f)
+#define OFPMT_MTS_SIZEe(MTSe) ((MTSe) & 0x7)
+
+#define OFPMT_MTS_Fieldf(MTSf) ((MTSf)>>10)& 0x3f)
+#define OFPMT_MTS_LENGTHf(MTSf) ((MTSf)>>3 & 0x7f)
+#define OFPMT_MTS_SIZEf(MTSf) ((MTSf) & 0x7)
+
+#define OFPMT_MTS_Fieldg(MTSg) ((MTSg)>>10)& 0x3f)
+#define OFPMT_MTS_LENGTHg(MTSg) ((MTSg)>>3 & 0x7f)
+#define OFPMT_MTS_SIZEg(MTSg) ((MTSg) & 0x7)
+
+#define OFPMT_MTS_Fieldh(MTSh) ((MTSh)>>10)& 0x3f)
+#define OFPMT_MTS_LENGTHh(MTSh) ((MTSh)>>3 & 0x7f)
+#define OFPMT_MTS_SIZEh(MTSh) ((MTSh) & 0x7)
+
+
+#define OFPMT_MTS_ALL(alllength,allsize)\((power(2,allsize)-1)<<6|(sizea+sizeb+sizec+sized+sizee+sizef+sizeg+sizeh))
+#define OFPMT_MTS_allsize(ALLMTS) ((ALLMTS) & 0x3f)
+#define OFPMT_MTS_alllength(ALLMTS) ((ALLMTS)>>6 & 0xffffffffffffff)
+
+
+enum mts_ofb_match_fields {
+OFPMT_MTS_IN_PORT = 0, /* Switch input port. */
+OFPMT_MTS_IN_PHY_PORT = 1, /* Switch physical input port. */
+OFPMT_MTS_METADATA = 2, /* Metadata passed between tables. */
+OFPMT_MTS_ETH_DST = 3, /* Ethernet destination address. */
+OFPMT_MTS_ETH_SRC = 4, /* Ethernet source address. */
+OFPMT_MTS_ETH_TYPE = 5, /* Ethernet frame type. */
+OFPMT_MTS_VLAN_VID = 6, /* VLAN id. */
+OFPMT_MTS_VLAN_PCP = 7, /* VLAN priority. */
+OFPMT_MTS_IP_DSCP = 8, /* IP DSCP (6 bits in ToS field). */
+OFPMT_MTS_IP_ECN = 9, /* IP ECN (2 bits in ToS field). */
+OFPMT_MTS_IP_PROTO = 10, /* IP protocol. */
+OFPMT_MTS_IPV4_SRC = 11, /* IPv4 source address. */
+OFPMT_MTS_IPV4_DST = 12, /* IPv4 destination address. */
+OFPMT_MTS_TCP_SRC = 13, /* TCP source port. */
+OFPMT_MTS_TCP_DST = 14, /* TCP destination port. */
+OFPMT_MTS_UDP_SRC = 15, /* UDP source port. */
+OFPMT_MTS_UDP_DST = 16, /* UDP destination port. */
+OFPMT_MTS_SCTP_SRC = 17, /* SCTP source port. */
+OFPMT_MTS_SCTP_DST = 18, /* SCTP destination port. */
+OFPMT_MTS_ICMPV4_TYPE = 19, /* ICMP type. */
+OFPMT_MTS_ICMPV4_CODE = 20, /* ICMP code. */
+OFPMT_MTS_ARP_OP = 21, /* ARP opcode. */
+OFPMT_MTS_ARP_SPA = 22, /* ARP source IPv4 address. */
+OFPMT_MTS_ARP_TPA = 23, /* ARP target IPv4 address. */
+OFPMT_MTS_ARP_SHA = 24, /* ARP source hardware address. */
+OFPMT_MTS_ARP_THA = 25, /* ARP target hardware address. */
+OFPMT_MTS_IPV6_SRC = 26, /* IPv6 source address. */
+OFPMT_MTS_IPV6_DST = 27, /* IPv6 destination address. */
+OFPMT_MTS_IPV6_FLABEL = 28, /* IPv6 Flow Label */
+OFPMT_MTS_ICMPV6_TYPE = 29, /* ICMPv6 type. */
+OFPMT_MTS_ICMPV6_CODE = 30, /* ICMPv6 code. */
+OFPMT_MTS_IPV6_ND_TARGET = 31, /* Target address for ND. */
+OFPMT_MTS_IPV6_ND_SLL = 32, /* Source link-layer for ND. */
+OFPMT_MTS_IPV6_ND_TLL = 33, /* Target link-layer for ND. */
+OFPMT_MTS_MPLS_LABEL = 34, /* MPLS label. */
+OFPMT_MTS_MPLS_TC = 35, /* MPLS TC. */
+OFPMT_MTS_MPLS_BOS = 36, /* MPLS BoS bit. */
+OFPMT_MTS_PBB_ISID = 37, /* PBB I-SID. */
+OFPMT_MTS_TUNNEL_ID = 38, /* Logical Port Metadata. */
+OFPMT_MTS_IPV6_EXTHDR = 39, /* IPv6 Extension Header pseudo-field */
+OFPMT_MTS_PBB_UCA = 41, /* PBB UCA header field. */
 };
 
+
+
+#define MTS_IN_PORT OFPMT_MTS (OFPMT_MTS_IN_PORT,16,4)			/* 0 */
+
+#define MTS_IN_PHY_PORT OFPMT_MTS (OFPMT_MTS_IN_PHY_PORT,16,4) 		/* 1*/
+
+#define MTS_METADATA OFPMT_MTS (OFPMT_MTS_METADATA,16,4)		/* 2 */
+
+#define MTS_ETH_DST OFPMT_MTS (OFPMT_MTS_ETH_DST,16,4)			/* 3 */
+
+#define MTS_ETH_SRC OFPMT_MTS (OFPMT_MTS_ETH_SRC,16,4)			/* 4 */
+
+#define MTS_MTS_ETH_TYPE OFPMT_MTS (OFPMT_MTS_ETH_TYPE,16,4)		/* 5 */
+
+#define MTS_VLAN_VID OFPMT_MTS (OFPMT_MTS_VLAN_VID,16,4)		/* 6 */
+
+#define MTS_VLAN_PCP OFPMT_MTS (OFPMT_MTS_VLAN_PCP,16,4)		/* 7 */
+
+#define MTS_IP_DSCP OFPMT_MTS (OFPMT_MTS_IP_DSCP,16,4)			/* 8 */
+
+#define MTS_IP_ECN OFPMT_MTS (OFPMT_MTS_IP_ECN,16,4)			/* 9 */
+
+#define MTS_IP_PROTO OFPMT_MTS (OFPMT_MTS_IP_PROTO,16,4)		/* 10 */
+
+#define MTS_IPV4_SRC OFPMT_MTS (OFPMT_MTS_IPV4_SRC,16,4)		/* 11 */
+
+#define MTS_IPV6_DST OFPMT_MTS (OFPMT_MTS_IPV6_DST,16,4)		/* 12 */
+
+#define MTS_TCP_SRC OFPMT_MTS (OFPMT_MTS_TCP_SRC,16,4)			/* 13 */
+
+#define MTS_TCP_DST OFPMT_MTS (OFPMT_MTS_TCP_DST,16,4)			/* 14 */
+
+
+#define MTS_UDP_SRC OFPMT_MTS (OFPMT_MTS_UDP_SRC,16,4)			/* 15 */
 /* Group numbering. Groups can use any number up to OFPG_MAX. */
 enum ofp_group {
     /* Last usable group number. */
