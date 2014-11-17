@@ -561,6 +561,10 @@ enum ofp_table {
                                 flow stats and flow deletes. */
 };
 
+
+#define max_entries_size(OFPTT_MAX)
+#define max_entries_size_OFPTT_MAX(entriesmax) ((entriesmax)& 0xff)
+
 enum ofp_table_config {
     /* OpenFlow 1.1 and 1.2 defined this field as shown.
      * OpenFlow 1.3 and later mark this field as deprecated, but have not
